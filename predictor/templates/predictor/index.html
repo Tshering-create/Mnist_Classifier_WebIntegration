@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MNIST Digit Classifier</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #00eaff;
+            font-size: 2rem;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 234, 255, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #00eaff;
+            color: white;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: #00eaff;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #00c0ff;
+        }
+
+        h3, h4 {
+            margin-top: 30px;
+            color: #ffffff;
+        }
+
+        ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            padding: 5px;
+            font-size: 1.1em;
+            background-color: rgba(255, 255, 255, 0.08);
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 20px;
+            }
+
+            form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload a Handwritten Digit Image</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="digit" required><br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction is not None %}
+        <h3>Prediction: {{ prediction }}</h3>
+        <h4>Probabilities:</h4>
+        <ul>
+            {% for prob in probs %}
+                <li>{{ forloop.counter0 }} ➝ {{ prob|floatformat:3 }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
